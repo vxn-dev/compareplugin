@@ -1,42 +1,52 @@
-import { createPopper } from '@popperjs/core';
-import './styles.css';
-
-const popcorn = document.querySelector('#popcorn');
-const tooltip = document.querySelector('#tooltip');
-
-const popperInstance = createPopper(popcorn, tooltip, {
-  placement: 'right',
-  modifiers: [
-    {
-      name: 'offset',
-      options: {
-        offset: [0, 8],
-      },
-    },
-  ],
-});
-
-document.querySelector('#container').scrollTop = 520;
-
-function show() {
-  tooltip.setAttribute('data-show', '');
-
-  // We need to tell Popper to update the tooltip position
-  // after we show the tooltip, otherwise it will be incorrect
-  popperInstance.update();
+#tooltip {
+  display: inline-block;
+  background: #ffffff;
+  color: #643045;
+  font-weight: bold;
+  padding: 5px 10px;
+  font-size: 13px;
+  border-radius: 4px;
 }
 
-function hide() {
-  tooltip.removeAttribute('data-show');
+#tooltip {
+  /* ... */
+  display: none;
 }
 
-const showEvents = ['mouseenter', 'focus'];
-const hideEvents = ['mouseleave', 'blur'];
+#tooltip[data-show] {
+  display: block;
+}
 
-showEvents.forEach((event) => {
-  popcorn.addEventListener(event, show);
-});
+#arrow,
+#arrow::before {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: inherit;
+}
 
-hideEvents.forEach((event) => {
-  popcorn.addEventListener(event, hide);
-});
+#arrow {
+  visibility: hidden;
+}
+
+#arrow::before {
+  visibility: visible;
+  content: '';
+  transform: rotate(45deg);
+}
+
+#tooltip[data-popper-placement^='top'] > #arrow {
+  bottom: -4px;
+}
+
+#tooltip[data-popper-placement^='bottom'] > #arrow {
+  top: -4px;
+}
+
+#tooltip[data-popper-placement^='left'] > #arrow {
+  right: -4px;
+}
+
+#tooltip[data-popper-placement^='right'] > #arrow {
+  left: -4px;
+}
